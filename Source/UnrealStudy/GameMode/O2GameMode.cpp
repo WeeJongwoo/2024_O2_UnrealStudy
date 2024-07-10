@@ -5,6 +5,13 @@
 
 AO2GameMode::AO2GameMode()
 {
+
+	ConstructorHelpers::FClassFinder<APawn> DefaultPawnClassRef(TEXT("/Game/Blueprint/Character/BP_PlayerCharacter.BP_PlayerCharacter_C"));
+	if (DefaultPawnClassRef.Class)
+	{
+		DefaultPawnClass = DefaultPawnClassRef.Class;
+	}
+
 	//ConstructorHelpers::FClassFinder<APawn>
 	//ConstructorHelpers::FClassFinder<APlayerController>
 }
