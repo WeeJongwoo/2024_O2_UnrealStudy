@@ -44,6 +44,7 @@ AO2PlayerCharacter::AO2PlayerCharacter()
 
 }
 
+//플레이어 컨트롤러에 있는 인풋 시스템을 가져와서 맵핑 컨텍스트 연결
 void AO2PlayerCharacter::BeginPlay()
 {
 	Super::BeginPlay();
@@ -56,6 +57,7 @@ void AO2PlayerCharacter::BeginPlay()
 	}
 }
 
+//프로젝트 세팅에서 기본으로 적용해둔 향상된 인풋 시스템 가져와서 인풋 액션이랑 함수 바인딩
 void AO2PlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
@@ -75,6 +77,7 @@ void AO2PlayerCharacter::Move(const FInputActionValue& Value)
 	const FRotator Rotation = Controller->GetControlRotation();
 	const FRotator YawRotation(0, Rotation.Yaw, 0);
 
+	//Yaw를 기준으로 X축, Y축 구하기
 	const FVector ForwardDiraction = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::X);
 	const FVector RightDiraction = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::Y);
 
