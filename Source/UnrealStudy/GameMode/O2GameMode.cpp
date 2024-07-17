@@ -12,6 +12,9 @@ AO2GameMode::AO2GameMode()
 		DefaultPawnClass = DefaultPawnClassRef.Class;
 	}
 
-	//ConstructorHelpers::FClassFinder<APawn>
-	//ConstructorHelpers::FClassFinder<APlayerController>
+	ConstructorHelpers::FClassFinder<APlayerController> PlayerControllerClassRef(TEXT("/Script/UnrealStudy.O2PlayerController"));
+	if (PlayerControllerClassRef.Class)
+	{
+		PlayerControllerClass = PlayerControllerClassRef.Class;
+	}
 }
