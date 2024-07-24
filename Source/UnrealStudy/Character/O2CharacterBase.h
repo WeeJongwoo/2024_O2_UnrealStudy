@@ -6,6 +6,16 @@
 #include "GameFramework/Character.h"
 #include "O2CharacterBase.generated.h"
 
+
+UENUM()
+enum class ECard
+{
+	ATK,
+	DEF,
+	LIFE,
+	RANK
+};
+
 UCLASS()
 class UNREALSTUDY_API AO2CharacterBase : public ACharacter
 {
