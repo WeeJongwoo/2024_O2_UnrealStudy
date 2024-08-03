@@ -41,7 +41,11 @@ AO2PlayerCharacter::AO2PlayerCharacter()
 	{
 		LookAction = LookActionRef.Object;
 	}
-
+	static ConstructorHelpers::FObjectFinder<UInputAction> AttackActionRef(TEXT("/Script/EnhancedInput.InputAction'/Game/Blueprint/Input/InputAction/IA_Attack.IA_Attack'"));
+	if (AttackActionRef.Object)
+	{
+		AttackAction = AttackActionRef.Object;
+	}
 }
 
 //플레이어 컨트롤러에 있는 인풋 시스템을 가져와서 맵핑 컨텍스트 연결
@@ -68,6 +72,7 @@ void AO2PlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputC
 	EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Completed, this, &ACharacter::StopJumping);
 	EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &AO2PlayerCharacter::Move);
 	EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &AO2PlayerCharacter::Look);
+	EnhancedInputComponent->BindAction(AttackAction, ETriggerEvent::Triggered, this, &AO2PlayerCharacter::Attack);
 }
 
 void AO2PlayerCharacter::Move(const FInputActionValue& Value)
@@ -93,4 +98,9 @@ void AO2PlayerCharacter::Look(const FInputActionValue& Value)
 	AddControllerYawInput(LookAxisVector.X);
 	AddControllerPitchInput(LookAxisVector.Y);
 
+}
+
+void AO2PlayerCharacter::Attack()
+{
+	AttackAnimationStart();
 }

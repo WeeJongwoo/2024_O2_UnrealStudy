@@ -33,17 +33,44 @@ AO2CharacterBase::AO2CharacterBase()
 
 }
 
-// Called when the game starts or when spawned
-void AO2CharacterBase::BeginPlay()
+void AO2CharacterBase::AttackHitCheck()
 {
-	Super::BeginPlay();
 
+	TArray<FHitResult> OutHitResults;
+	FCollisionQueryParams Params(SCENE_QUERY_STAT(Attack), false, this);
+
+	const float AttackRange = 200.0f;
+	const FVector Start = GetActorLocation() + GetActorForwardVector() * GetCapsuleComponent()->GetScaledCapsuleRadius();
+	const FVector End = Start + GetActorForwardVector() * AttackRange;
+	const FVector AttackBoxHalfExtent(25.0f, 25.0f, 25.0f);
+
+	bool IsHit = GetWorld()->SweepMultiByChannel(OutHitResults, Start, End, FQuat::Identity,ECC_GameTraceChannel1, 
+		FCollisionShape::MakeBox(AttackBoxHalfExtent), Params);
+
+	FColor DebugColor = IsHit ? FColor::Green : FColor::Red;
+	FVector DebugBoxExtent = AttackBoxHalfExtent + FVector(0.0f, 0.0f, AttackRange/2);
+
+	DrawDebugBox(GetWorld(), Start + (End - Start) * 0.5f, DebugBoxExtent, FRotationMatrix::MakeFromZ(GetActorForwardVector()).ToQuat(), 
+		DebugColor, false, 5.0f);
+	UE_LOG(LogTemp, Log, TEXT("Hit Target Num: %d"), OutHitResults.Num());
 }
 
-// Called every frame
-void AO2CharacterBase::Tick(float DeltaTime)
+void AO2CharacterBase::AttackAnimationStart()
 {
-	Super::Tick(DeltaTime);
+	GetCharacterMovement()->SetMovementMode(EMovementMode::MOVE_None);
 
+	const float AnimationRate = 1.0f;
+	UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance();
+	AnimInstance->Montage_Play(AttackActionMontage, AnimationRate);
+
+	FOnMontageEnded EndDelegate;
+	EndDelegate.BindUObject(this, &AO2CharacterBase::AttackEnd);
+	AnimInstance->Montage_SetEndDelegate(EndDelegate, AttackActionMontage);
 }
+
+void AO2CharacterBase::AttackEnd(class UAnimMontage* TargetMontage, bool IsProperlyEnded)
+{
+	GetCharacterMovement()->SetMovementMode(EMovementMode::MOVE_Walking);
+}
+
 

@@ -4,20 +4,12 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
+#include "Interface/O2AnimationAttackInterface.h"
 #include "O2CharacterBase.generated.h"
 
 
-UENUM()
-enum class ECard
-{
-	ATK,
-	DEF,
-	LIFE,
-	RANK
-};
-
 UCLASS()
-class UNREALSTUDY_API AO2CharacterBase : public ACharacter
+class UNREALSTUDY_API AO2CharacterBase : public ACharacter, public IO2AnimationAttackInterface
 {
 	GENERATED_BODY()
 
@@ -26,11 +18,11 @@ public:
 	AO2CharacterBase();
 
 protected:
-	// Called when the game starts or when spawned
-	virtual void BeginPlay() override;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	TObjectPtr<class UAnimMontage> AttackActionMontage;
 
-public:	
-	// Called every frame
-	virtual void Tick(float DeltaTime) override;
+	virtual void AttackHitCheck() override;
+	void AttackAnimationStart();
+	void AttackEnd(class UAnimMontage* TargetMontage, bool IsProperlyEnded);
 
 };
