@@ -10,16 +10,7 @@ public class UnrealStudy : ModuleRules
 
 		PublicIncludePaths.AddRange(new string[] { "UnrealStudy" });
 	
-		PublicDependencyModuleNames.AddRange(new string[] { 
-			"Core", 
-			"CoreUObject", 
-			"Engine", 
-			"InputCore", 
-			"EnhancedInput",
-
-			"NavigationSystem",
-			"AIModule",
-			"GameplayTasks"});
+		PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore", "EnhancedInput" });
 
 		PrivateDependencyModuleNames.AddRange(new string[] {  });
 

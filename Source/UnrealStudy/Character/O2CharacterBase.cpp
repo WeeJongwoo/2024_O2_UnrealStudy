@@ -17,7 +17,6 @@ AO2CharacterBase::AO2CharacterBase()
 	bUseControllerRotationRoll = false;
 
 	GetCapsuleComponent()->InitCapsuleSize(50.f, 100.f);
-	GetCapsuleComponent()->SetCollisionProfileName(TEXT("Player"));
 
 	GetCharacterMovement()->bOrientRotationToMovement = true;
 	GetCharacterMovement()->RotationRate = FRotator(0.f, 500.0f, 0.f);
